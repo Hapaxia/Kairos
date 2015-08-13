@@ -3,7 +3,7 @@
 // Kairos
 // --
 //
-// Fps
+// Fps Lite
 //
 // Copyright(c) 2015 M.J.Silk
 //
@@ -30,27 +30,36 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KAIROS_FPS_HPP
-#define KAIROS_FPS_HPP
-
-#include "Stopwatch.hpp"
+#include "FpsLite.hpp"
 
 namespace kairos
 {
 
-class Fps
+FpsLite::FpsLite() :
+m_framesPassed(0),
+m_fps(0)
 {
-public:
-	Fps();
-	double getFps() const;
-	void update(); // update should be called every frame
-	void reset(); // restarts clock and resets number of frames passed to zero
+}
 
-private:
-	Stopwatch clock;
-	unsigned int m_framesPassed;
-	double m_fps;
-};
+double FpsLite::getFps() const
+{
+	return m_fps;
+}
+
+void FpsLite::update()
+{
+	++m_framesPassed;
+	if (clock.getTime().asSeconds() >= 1.0)
+	{
+		m_fps = m_framesPassed / clock.restart().asSeconds();
+		m_framesPassed = 0;
+	}
+}
+
+void FpsLite::reset()
+{
+	m_framesPassed = 0;
+	clock.restart();
+}
 
 } // namespace kairos
-#endif // KAIROS_FPS_HPP
