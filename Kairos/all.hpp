@@ -36,7 +36,7 @@
 #include "BasicClock.hpp"
 #include "Continuum.hpp"
 #include "Duration.hpp"
-#include "Fps.hpp"
+#include "FpsLite.hpp"
 #include "Stopwatch.hpp"
 #include "Timer.hpp"
 #include "Timestep.hpp"
