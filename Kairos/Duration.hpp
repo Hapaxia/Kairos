@@ -45,9 +45,9 @@ public:
 	long long int nano{ 0 };
 
 	Duration();
-	Duration(long long int nanoseconds);
-	Duration(long int microseconds);
-	Duration(int milliseconds);
+	explicit Duration(long long int nanoseconds);
+	explicit Duration(long int microseconds);
+	explicit Duration(int milliseconds);
 	Duration(double seconds);
 	Duration zero();
 	long long int asNanoseconds() const;
