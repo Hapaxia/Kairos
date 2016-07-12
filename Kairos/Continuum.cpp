@@ -72,6 +72,12 @@ double Continuum::getSpeed() const
 	return m_speed;
 }
 
+void Continuum::setTime(Duration time)
+{
+	updateTime();
+	m_time = time;
+}
+
 Duration Continuum::getTime() const
 {
 	updateTime();

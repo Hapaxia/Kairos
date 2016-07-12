@@ -47,6 +47,7 @@ public:
 	void stop();
 	void setSpeed(double speed);
 	double getSpeed() const;
+	void setTime(Duration time);
 	Duration getTime() const;
 	bool isStopped() const;
 
