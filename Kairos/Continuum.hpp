@@ -47,16 +47,16 @@ public:
 	void stop();
 	void setSpeed(double speed);
 	double getSpeed() const;
-	Duration getTime();
+	Duration getTime() const;
 	bool isStopped() const;
 
 private:
-	Stopwatch m_stopwatch;
-	Duration m_time;
+	mutable Stopwatch m_stopwatch;
+	mutable Duration m_time;
 	double m_speed;
 	//double m_isPaused;
 
-	inline void updateTime();
+	inline void updateTime() const;
 };
 
 } // namespace kairos

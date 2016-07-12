@@ -61,7 +61,7 @@ void Continuum::stop()
 	m_stopwatch.pause();
 }
 
-void Continuum::setSpeed(double speed)
+void Continuum::setSpeed(const double speed)
 {
 	updateTime();
 	m_speed = speed;
@@ -72,7 +72,7 @@ double Continuum::getSpeed() const
 	return m_speed;
 }
 
-Duration Continuum::getTime()
+Duration Continuum::getTime() const
 {
 	updateTime();
 	return m_time;
@@ -87,7 +87,7 @@ bool Continuum::isStopped() const
 
 // PRIVATE
 
-inline void Continuum::updateTime()
+inline void Continuum::updateTime() const
 {
 	const bool isStopped{ m_stopwatch.isPaused() };
 	m_time += m_stopwatch.restart() * m_speed;
