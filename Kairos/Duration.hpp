@@ -57,12 +57,12 @@ public:
 	double asMinutes() const;
 	double asHours() const;
 
-	void setFromHours(double hours);
-	void setFromMinutes(double minutes);
-	void setFromSeconds(double seconds);
-	void setFromMilliseconds(int milliseconds);
-	void setFromMicroseconds(long int microseconds);
-	void setFromNanoseconds(long long int nanoseconds);
+	Duration& setFromHours(double hours);
+	Duration& setFromMinutes(double minutes);
+	Duration& setFromSeconds(double seconds);
+	Duration& setFromMilliseconds(int milliseconds);
+	Duration& setFromMicroseconds(long int microseconds);
+	Duration& setFromNanoseconds(long long int nanoseconds);
 
 	Duration operator+(const Duration& offset) const;
 	Duration operator-(const Duration& offset) const;

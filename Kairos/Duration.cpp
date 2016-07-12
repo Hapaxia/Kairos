@@ -100,34 +100,40 @@ double Duration::asHours() const
 
 
 
-void Duration::setFromHours(double hours)
+Duration& Duration::setFromHours(double hours)
 {
 	nano = static_cast<long long int>(hours * 3600000000000.0);
+	return *this;
 }
 
-void Duration::setFromMinutes(double minutes)
+Duration& Duration::setFromMinutes(double minutes)
 {
 	nano = static_cast<long long int>(minutes * 60000000000.0);
+	return *this;
 }
 
-void Duration::setFromSeconds(double seconds)
+Duration& Duration::setFromSeconds(double seconds)
 {
 	nano = static_cast<long long int>(seconds * 1000000000.0);
+	return *this;
 }
 
-void Duration::setFromMilliseconds(int milliseconds)
+Duration& Duration::setFromMilliseconds(int milliseconds)
 {
 	nano = milliseconds * 1000000;
+	return *this;
 }
 
-void Duration::setFromMicroseconds(long int microseconds)
+Duration& Duration::setFromMicroseconds(long int microseconds)
 {
 	nano = microseconds * 1000;
+	return *this;
 }
 
-void Duration::setFromNanoseconds(long long int nanoseconds)
+Duration& Duration::setFromNanoseconds(long long int nanoseconds)
 {
 	nano = nanoseconds;
+	return *this;
 }
 
 
