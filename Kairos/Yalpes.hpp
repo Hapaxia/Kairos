@@ -94,8 +94,6 @@ private:
 	Absorel m_playbackStartingPosition{ { 0, 0.0 } };
 	unsigned int m_lengthInSteps{ 0u };
 
-	bool sortEventsByPosition(const Event& lhs, const Event& rhs);
-
 	void orderEvents(std::vector<Event>& events);
 	std::string stringFromPositionWithSubsteps(const Absorel& position, unsigned int substeps) const;
 	void resetEventsWaiting();
