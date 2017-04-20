@@ -33,6 +33,8 @@
 #ifndef KAIROS_ABSOREL_INL
 #define KAIROS_ABSOREL_INL
 
+#include <cmath>
+
 namespace kairos
 {
 
@@ -53,7 +55,7 @@ template <typename T>
 Absorel Absorel::operator+(const T& offset) const
 {
 	Absorel positionOffset{ offset };
-	int resultAbsolute = static_cast<int>(floor(relative + positionOffset.relative)) + absolute + positionOffset.absolute;
+	int resultAbsolute = static_cast<int>(std::floor(relative + positionOffset.relative)) + absolute + positionOffset.absolute;
 	double resultRelative = (relative + positionOffset.relative + absolute + positionOffset.absolute) - resultAbsolute;
 	return{ resultAbsolute, resultRelative };
 }
@@ -62,7 +64,7 @@ template <typename T>
 Absorel Absorel::operator-(const T& offset) const
 {
 	Absorel positionOffset{ offset };
-	int resultAbsolute = static_cast<int>(floor((relative + absolute) - (positionOffset.relative + positionOffset.absolute)));
+	int resultAbsolute = static_cast<int>(std::floor((relative + absolute) - (positionOffset.relative + positionOffset.absolute)));
 	double resultRelative = (relative + absolute) - (positionOffset.relative + positionOffset.absolute) - resultAbsolute;
 	return{ resultAbsolute, resultRelative };
 }
@@ -110,7 +112,7 @@ Absorel& Absorel::operator/=(const T& divisor)
 template <typename T>
 Absorel Absorel::positionFromNumber(const T& number) const
 {
-	int resultAbsolute = static_cast<int>(floor(static_cast<long double>(number)));
+	int resultAbsolute = static_cast<int>(std::floor(static_cast<long double>(number)));
 	double resultRelative = static_cast<double>(static_cast<long double>(number)-resultAbsolute);
 	return{ resultAbsolute, resultRelative };
 }

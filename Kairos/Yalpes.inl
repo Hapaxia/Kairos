@@ -34,6 +34,7 @@
 #define KAIROS_YALPES_INL
 
 #include <algorithm> // for std::sort
+#include <cmath>
 
 namespace kairos
 {
@@ -343,7 +344,7 @@ void Yalpes<TData>::resetEventsWaiting()
 template <typename TData>
 std::string Yalpes<TData>::stringFromPositionWithSubsteps(const Absorel& position, unsigned int substeps) const
 {
-	return std::to_string(position.absolute) + ":" + std::to_string(static_cast<int>(floor(position.relative * substeps)));
+	return std::to_string(position.absolute) + ":" + std::to_string(static_cast<int>(std::floor(position.relative * substeps)));
 }
 
 

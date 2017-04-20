@@ -49,14 +49,14 @@ Absorel::Absorel(int a, double r)
 
 Absorel Absorel::operator+(const Absorel& offset) const
 {
-	int resultAbsolute = static_cast<int>(floor(relative + offset.relative)) + absolute + offset.absolute;
+	int resultAbsolute = static_cast<int>(std::floor(relative + offset.relative)) + absolute + offset.absolute;
 	double resultRelative = (relative + offset.relative + absolute + offset.absolute) - resultAbsolute;
 	return{ resultAbsolute, resultRelative };
 }
 
 Absorel Absorel::operator-(const Absorel& offset) const
 {
-	int resultAbsolute = static_cast<int>(floor((relative + absolute) - (offset.relative + offset.absolute)));
+	int resultAbsolute = static_cast<int>(std::floor((relative + absolute) - (offset.relative + offset.absolute)));
 	double resultRelative = (relative + absolute) - (offset.relative + offset.absolute) - resultAbsolute;
 	return{ resultAbsolute, resultRelative };
 }
