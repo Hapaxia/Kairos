@@ -81,7 +81,5 @@ private:
 };
 
 } // namespace kairos
-
 #include "Absorel.inl"
-
 #endif // KAIROS_ABSOREL_HPP
