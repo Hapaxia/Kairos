@@ -30,6 +30,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef KAIROS_ABSOREL_INL
+#define KAIROS_ABSOREL_INL
+
 namespace kairos
 {
 
@@ -113,3 +116,4 @@ Absorel Absorel::positionFromNumber(const T& number) const
 }
 
 } // namespace kairos
+#endif // KAIROS_ABSOREL_INL

@@ -30,6 +30,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef KAIROS_YALPES_INL
+#define KAIROS_YALPES_INL
+
 namespace kairos
 {
 
@@ -448,3 +451,4 @@ bool Yalpes<TData>::Event::operator>(const Event& e) const
 }
 
 } // namespace kairos
+#endif // KAIROS_YALPES_INL
