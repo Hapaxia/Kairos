@@ -33,6 +33,8 @@
 #ifndef KAIROS_YALPES_INL
 #define KAIROS_YALPES_INL
 
+#include <algorithm> // for std::sort
+
 namespace kairos
 {
 

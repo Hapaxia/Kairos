@@ -37,15 +37,12 @@
 #ifndef KAIROS_STOPWATCH_HPP
 #define KAIROS_STOPWATCH_HPP
 
-#include <chrono>
 #include "Duration.hpp"
+
+#include <chrono>
 
 namespace kairos
 {
-
-using std::chrono::high_resolution_clock;
-using std::chrono::nanoseconds;
-using std::chrono::duration_cast;
 
 class Stopwatch
 {
@@ -59,7 +56,7 @@ public:
 	bool isPaused() const;
 
 private:
-	high_resolution_clock::time_point m_startTime;
+	std::chrono::high_resolution_clock::time_point m_startTime;
 	bool m_isPaused;
 	Duration m_accumulatedDuration;
 };

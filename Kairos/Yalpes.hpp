@@ -33,13 +33,11 @@
 #ifndef KAIROS_YALPES_HPP
 #define KAIROS_YALPES_HPP
 
-#include <vector>
-#include <string>
-#include <algorithm> // for std::sort
-#include <ostream>
 #include "Absorel.hpp"
 #include "Duration.hpp"
 #include "Stopwatch.hpp"
+#include <vector>
+#include <string>
 
 namespace kairos
 {

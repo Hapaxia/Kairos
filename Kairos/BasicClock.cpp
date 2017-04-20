@@ -32,6 +32,8 @@
 
 #include "BasicClock.hpp"
 
+#include <chrono>
+
 namespace kairos
 {
 

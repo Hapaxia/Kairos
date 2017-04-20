@@ -33,8 +33,6 @@
 #ifndef KAIROS_BASICCLOCK_HPP
 #define KAIROS_BASICCLOCK_HPP
 
-#include <chrono>
-
 namespace kairos
 {
 
