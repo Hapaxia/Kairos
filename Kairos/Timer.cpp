@@ -35,8 +35,8 @@
 namespace kairos
 {
 
-Timer::Timer() :
-	m_isDone(true)
+Timer::Timer()
+	: m_isDone(true)
 {
 	m_stopwatch.stop();
 }

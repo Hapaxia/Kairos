@@ -35,10 +35,10 @@
 namespace kairos
 {
 
-Continuum::Continuum() :
-	m_stopwatch(),
-	m_time(),
-	m_speed(1.0)
+Continuum::Continuum()
+	: m_stopwatch()
+	, m_time()
+	, m_speed(1.0)
 {
 }
 

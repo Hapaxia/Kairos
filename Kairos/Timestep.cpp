@@ -35,12 +35,12 @@
 namespace kairos
 {
 
-Timestep::Timestep() :
-	m_step(0.01),
-	m_accumulator(0.0),
-	m_overall(0.0),
-	m_maxAccumulation(0.1),
-	m_timeSpeed(1.0)
+Timestep::Timestep()
+	: m_step(0.01)
+	, m_accumulator(0.0)
+	, m_overall(0.0)
+	, m_maxAccumulation(0.1)
+	, m_timeSpeed(1.0)
 {
 }
 

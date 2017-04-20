@@ -35,10 +35,10 @@
 namespace kairos
 {
 
-TimestepLite::TimestepLite() :
-	m_step(0.01),
-	m_accumulator(0.0),
-	m_overall(0.0)
+TimestepLite::TimestepLite()
+	: m_step(0.01)
+	, m_accumulator(0.0)
+	, m_overall(0.0)
 {
 }
 

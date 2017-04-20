@@ -37,10 +37,10 @@
 namespace kairos
 {
 
-BasicClock::BasicClock() :
-m_secondsInOneMinute(60),
-m_secondsInOneHour(3600),
-m_secondsInOneDay(86400)
+BasicClock::BasicClock()
+	: m_secondsInOneMinute(60)
+	, m_secondsInOneHour(3600)
+	, m_secondsInOneDay(86400)
 {
 }
 

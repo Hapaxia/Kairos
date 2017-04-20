@@ -39,9 +39,9 @@ using std::chrono::high_resolution_clock;
 using std::chrono::nanoseconds;
 using std::chrono::duration_cast;
 
-Stopwatch::Stopwatch() :
-	m_startTime(high_resolution_clock::now()),
-	m_isPaused(false)
+Stopwatch::Stopwatch()
+	: m_startTime(high_resolution_clock::now())
+	, m_isPaused(false)
 {
 }
 

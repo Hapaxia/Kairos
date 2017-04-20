@@ -35,9 +35,9 @@
 namespace kairos
 {
 
-FpsLite::FpsLite() :
-m_framesPassed(0),
-m_fps(0)
+FpsLite::FpsLite()
+	: m_framesPassed(0)
+	, m_fps(0)
 {
 }
 
