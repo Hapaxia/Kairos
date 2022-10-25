@@ -118,13 +118,13 @@ private:
 ***********************************/
 
 template <typename TData>
-Yalpes<TData>::Yalpes()
+inline Yalpes<TData>::Yalpes()
 {
 	tracks.resize(1);
 }
 
 template <typename TData>
-void Yalpes<TData>::update()
+inline void Yalpes<TData>::update()
 {
 	if (m_isPlaying)
 	{
@@ -145,7 +145,7 @@ void Yalpes<TData>::update()
 }
 
 template <typename TData>
-void Yalpes<TData>::moveEventsInQueueBeforeCurrentPositionToWaiting()
+inline void Yalpes<TData>::moveEventsInQueueBeforeCurrentPositionToWaiting()
 {
 	for (auto& track : tracks)
 	{
@@ -168,7 +168,7 @@ void Yalpes<TData>::moveEventsInQueueBeforeCurrentPositionToWaiting()
 }
 
 template <typename TData>
-void Yalpes<TData>::prepareEventQueue()
+inline void Yalpes<TData>::prepareEventQueue()
 {
 	unsigned int latestStep{ 0u };
 	resetEventsWaiting();
@@ -189,7 +189,7 @@ void Yalpes<TData>::prepareEventQueue()
 }
 
 template <typename TData>
-void Yalpes<TData>::play()
+inline void Yalpes<TData>::play()
 {
 	m_playbackStartingPosition = m_currentPosition;
 	prepareEventQueue();
@@ -198,14 +198,14 @@ void Yalpes<TData>::play()
 }
 
 template <typename TData>
-void Yalpes<TData>::stop()
+inline void Yalpes<TData>::stop()
 {
 	pause();
 	rewind();
 }
 
 template <typename TData>
-void Yalpes<TData>::pause()
+inline void Yalpes<TData>::pause()
 {
 	moveEventsInQueueBeforeCurrentPositionToWaiting();
 	resetEventsWaiting();
@@ -213,19 +213,19 @@ void Yalpes<TData>::pause()
 }
 
 template <typename TData>
-void Yalpes<TData>::seek(unsigned int positionAbsolute)
+inline void Yalpes<TData>::seek(unsigned int positionAbsolute)
 {
 	seek(positionAbsolute, 0.0);
 }
 
 template <typename TData>
-void Yalpes<TData>::seek(const Absorel& position)
+inline void Yalpes<TData>::seek(const Absorel& position)
 {
 	seek(position.absolute, position.relative);
 }
 
 template <typename TData>
-void Yalpes<TData>::seek(unsigned int positionAbsolute, double positionRelative)
+inline void Yalpes<TData>::seek(unsigned int positionAbsolute, double positionRelative)
 {
 	const unsigned int MIN_STEP{ 0u };
 	if ((positionAbsolute < MIN_STEP) || (positionRelative + positionAbsolute < MIN_STEP))
@@ -239,49 +239,49 @@ void Yalpes<TData>::seek(unsigned int positionAbsolute, double positionRelative)
 }
 
 template <typename TData>
-void Yalpes<TData>::rewind()
+inline void Yalpes<TData>::rewind()
 {
 	seek(0);
 }
 
 template <typename TData>
-bool Yalpes<TData>::isPlaying() const
+inline bool Yalpes<TData>::isPlaying() const
 {
 	return m_isPlaying;
 }
 
 template <typename TData>
-Absorel Yalpes<TData>::getPosition() const
+inline Absorel Yalpes<TData>::getPosition() const
 {
 	return m_currentPosition;
 }
 
 template <typename TData>
-Duration Yalpes<TData>::getPlayTime() const
+inline Duration Yalpes<TData>::getPlayTime() const
 {
 	return m_playbackClock.getTime();
 }
 
 template <typename TData>
-double Yalpes<TData>::getSpeed() const
+inline double Yalpes<TData>::getSpeed() const
 {
 	return m_speed;
 }
 
 template <typename TData>
-unsigned int Yalpes<TData>::getSubsteps() const
+inline unsigned int Yalpes<TData>::getSubsteps() const
 {
 	return m_substeps;
 }
 
 template <typename TData>
-unsigned int Yalpes<TData>::getNumberOfTracks() const
+inline unsigned int Yalpes<TData>::getNumberOfTracks() const
 {
 	return tracks.size();
 }
 
 template <typename TData>
-unsigned int Yalpes<TData>::getNumberOfActiveTracks() const
+inline unsigned int Yalpes<TData>::getNumberOfActiveTracks() const
 {
 	unsigned int total{ 0u };
 	for (auto& track : tracks)
@@ -294,7 +294,7 @@ unsigned int Yalpes<TData>::getNumberOfActiveTracks() const
 
 
 template <typename TData>
-void Yalpes<TData>::setSpeed(double speed)
+inline void Yalpes<TData>::setSpeed(double speed)
 {
 	const double MIN_SPEED = 1.0;
 	const double MAX_SPEED = 1000.0;
@@ -303,46 +303,46 @@ void Yalpes<TData>::setSpeed(double speed)
 }
 
 template <typename TData>
-void Yalpes<TData>::setSubsteps(unsigned int substeps)
+inline void Yalpes<TData>::setSubsteps(unsigned int substeps)
 {
 	m_substeps = substeps;
 }
 
 template <typename TData>
-std::string Yalpes<TData>::stringFromPosition(const Absorel& position) const
+inline std::string Yalpes<TData>::stringFromPosition(const Absorel& position) const
 {
 	return stringFromPositionWithSubsteps(position, m_substeps);
 }
 
 template <typename TData>
-void Yalpes<TData>::automaticallyRemoveWaitingEventsOnNextUpdate()
+inline void Yalpes<TData>::automaticallyRemoveWaitingEventsOnNextUpdate()
 {
-	m_automaticallyRemoveWaitingEventsOnNextUpdate = true;
+	m_doAutomaticallyRemoveWaitingEventsOnNextUpdate = true;
 }
 
 template <typename TData>
-void Yalpes<TData>::doNotAutomaticallyRemoveWaitingEventsOnNextUpdate()
+inline void Yalpes<TData>::doNotAutomaticallyRemoveWaitingEventsOnNextUpdate()
 {
-	m_automaticallyRemoveWaitingEventsOnNextUpdate = false;
+	m_doAutomaticallyRemoveWaitingEventsOnNextUpdate = false;
 }
 
 // PRIVATE
 
 template <typename TData>
-void Yalpes<TData>::orderEvents(std::vector<Event>& events)
+inline void Yalpes<TData>::orderEvents(std::vector<Event>& events)
 {
 	std::sort(events.begin(), events.end());
 }
 
 template <typename TData>
-void Yalpes<TData>::resetEventsWaiting()
+inline void Yalpes<TData>::resetEventsWaiting()
 {
 	for (auto& track : tracks)
 		track.eventsWaiting.clear();
 }
 
 template <typename TData>
-std::string Yalpes<TData>::stringFromPositionWithSubsteps(const Absorel& position, unsigned int substeps) const
+inline std::string Yalpes<TData>::stringFromPositionWithSubsteps(const Absorel& position, unsigned int substeps) const
 {
 	return std::to_string(position.absolute) + ":" + std::to_string(static_cast<int>(std::floor(position.relative * substeps)));
 }
@@ -378,24 +378,24 @@ std::string Yalpes<TData>::stringFromPositionWithSubsteps(const Absorel& positio
 *****************************************/
 
 template <typename TData>
-Yalpes<TData>::Track::Track()
+inline Yalpes<TData>::Track::Track()
 {
 }
 
 template <typename TData>
-void Yalpes<TData>::Track::activate()
+inline void Yalpes<TData>::Track::activate()
 {
 	setActivated(true);
 }
 
 template <typename TData>
-void Yalpes<TData>::Track::deactivate()
+inline void Yalpes<TData>::Track::deactivate()
 {
 	setActivated(false);
 }
 
 template <typename TData>
-bool Yalpes<TData>::Track::isActivated() const
+inline bool Yalpes<TData>::Track::isActivated() const
 {
 	return m_isActivated;
 }
@@ -403,7 +403,7 @@ bool Yalpes<TData>::Track::isActivated() const
 // PRIVATE
 
 template <typename TData>
-void Yalpes<TData>::Track::setActivated(bool isActivated)
+inline void Yalpes<TData>::Track::setActivated(bool isActivated)
 {
 	m_isActivated = isActivated;
 	if (!m_isActivated)
@@ -442,13 +442,13 @@ void Yalpes<TData>::Track::setActivated(bool isActivated)
 *****************************************/
 
 template <typename TData>
-bool Yalpes<TData>::Event::operator<(const Event& e) const
+inline bool Yalpes<TData>::Event::operator<(const Event& e) const
 {
 	return (position.absolute + position.relative) < (e.position.absolute + e.position.relative);
 }
 
 template <typename TData>
-bool Yalpes<TData>::Event::operator>(const Event& e) const
+inline bool Yalpes<TData>::Event::operator>(const Event& e) const
 {
 	return (position.absolute + position.relative) > (e.position.absolute + e.position.relative);
 }
