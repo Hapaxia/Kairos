@@ -61,4 +61,6 @@ private:
 };
 
 } // namespace kairos
+
+#include "Continuum.inl"
 #endif // KAIROS_CONTINUUM_HPP

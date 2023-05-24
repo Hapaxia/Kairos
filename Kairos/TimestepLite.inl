@@ -30,32 +30,70 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KAIROS_TIMESTEPLITE_HPP
-#define KAIROS_TIMESTEPLITE_HPP
+#ifndef KAIROS_TIMESTEPLITE_INL
+#define KAIROS_TIMESTEPLITE_INL
+
+#include "TimestepLite.hpp"
 
 namespace kairos
 {
 
-class TimestepLite
+TimestepLite::TimestepLite()
+	: m_step(0.01)
+	, m_accumulator(0.0)
+	, m_overall(0.0)
 {
-public:
-	TimestepLite();
-	void update(double frameTime);
-	bool isTimeToIntegrate();
+}
 
-	void setStep(double step);
-	double getStep() const;
-	double getOverall() const;
+void TimestepLite::update(double frameTime)
+{
+	m_accumulator += frameTime;
+}
 
-private:
-	double m_step;
-	double m_accumulator;
-	double m_overall;
+bool TimestepLite::isTimeToIntegrate()
+{
+	if ((m_step > 0.0) && (m_accumulator >= m_step))
+	{
+		m_accumulator -= m_step;
+		m_overall += m_step;
+		return true;
+	}
+	else if ((m_step < 0.0) && (m_accumulator <= m_step))
+	{
+		m_accumulator -= m_step;
+		m_overall += m_step;
+		return true;
+	}
+	else
+		return false;
+}
 
-	bool shouldBeZero(double a) const;
-};
+void TimestepLite::setStep(double step)
+{
+	m_step = step;
+	if (shouldBeZero(m_step))
+		m_step = 0.0;
+}
+
+double TimestepLite::getStep() const
+{
+	return m_step;
+}
+
+double TimestepLite::getOverall() const
+{
+	return (m_overall > m_step) ? m_overall - m_step : 0.0;
+}
+
+
+
+// PRIVATE
+
+bool TimestepLite::shouldBeZero(double a) const
+{
+	const double zeroEpsilon{ 0.00001 };
+	return a < zeroEpsilon && a > -zeroEpsilon;
+}
 
 } // namespace kairos
-
-#include "TimestepLite.inl"
-#endif // KAIROS_TIMESTEPLITE_HPP
+#endif // KAIROS_TIMESTEPLITE_INL

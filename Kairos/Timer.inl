@@ -30,44 +30,94 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-// WARNING: C++11 or later required (uses <chrono>)
+#ifndef KAIROS_TIMER_INL
+#define KAIROS_TIMER_INL
 
-// Pausable countdown timer
-
-// "time" refers to time remaining
-
-#ifndef KAIROS_TIMER_HPP
-#define KAIROS_TIMER_HPP
-
-#include "Duration.hpp"
-#include "Stopwatch.hpp"
+#include "Timer.hpp"
 
 namespace kairos
 {
 
-class Timer
+Timer::Timer()
+	: m_isDone(true)
 {
-public:
-	Timer();
-	void setTime(Duration& time); // sets a new start time which becomes the new current time
-	Duration getTime(); // returns the current time. also acts as an "update"
-	bool isDone() const; // returns true if timer has finished
-	bool isPaused() const; // returns true if timer has finished
-	void start(); // begin counting down
-	void resume(); // alias of start()
-	void pause(); // stop counting down at current time
-	void stop(); // finish counting down and reset time to zero
-	void finish(); // alias of stop()
-	void reset(); // sets the timer to the previously set (starting) time and pauses
-	void restart(); // reset(), resume()
+	m_stopwatch.stop();
+}
 
-private:
-	Stopwatch m_stopwatch;
-	Duration m_startTime;
-	bool m_isDone;
-};
+void Timer::setTime(Duration& time)
+{
+	m_startTime = time;
+	if (m_stopwatch.isPaused())
+		reset();
+	else
+		restart();
+}
 
-} // namespace Kairos
+// needs fixing
+Duration Timer::getTime()
+{
+	if ((m_startTime - m_stopwatch.getTime()).nano < 0)
+		stop();
+	if (m_isDone)
+		return m_stopwatch.getTime();
+	else
+		return m_startTime - m_stopwatch.getTime();
+}
 
-#include "Timer.inl"
-#endif // KAIROS_TIMER_HPP
+bool Timer::isDone() const
+{
+	return m_isDone;
+}
+
+bool Timer::isPaused() const
+{
+	return m_stopwatch.isPaused();
+}
+
+void Timer::start()
+{
+	if (getTime().nano > 0)
+	{
+		m_isDone = false;
+		m_stopwatch.resume();
+	}
+}
+
+void Timer::resume()
+{
+	start();
+}
+
+void Timer::pause()
+{
+	m_stopwatch.pause();
+}
+
+void Timer::stop()
+{
+	m_isDone = true;
+	m_stopwatch.stop();
+}
+
+void Timer::finish()
+{
+	stop();
+}
+
+void Timer::reset()
+{
+	m_isDone = false;
+	if (m_stopwatch.isPaused())
+		m_stopwatch.stop();
+	else
+		m_stopwatch.restart();
+}
+
+void Timer::restart()
+{
+	m_isDone = false;
+	m_stopwatch.restart();
+}
+
+} // namespace kairos
+#endif // KAIROS_TIMER_INL

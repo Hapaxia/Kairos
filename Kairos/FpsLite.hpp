@@ -53,4 +53,6 @@ private:
 };
 
 } // namespace kairos
+
+#include "FpsLite.inl"
 #endif // KAIROS_FPSLITE_HPP

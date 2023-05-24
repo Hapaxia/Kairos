@@ -3,9 +3,9 @@
 // Kairos
 // --
 //
-// Timer
+// Continuum
 //
-// Copyright(c) 2014-2023 M.J.Silk
+// Copyright(c) 2015-2023 M.J.Silk
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -30,44 +30,79 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-// WARNING: C++11 or later required (uses <chrono>)
+#ifndef KAIROS_CONTINUUM_INL
+#define KAIROS_CONTINUUM_INL
 
-// Pausable countdown timer
-
-// "time" refers to time remaining
-
-#ifndef KAIROS_TIMER_HPP
-#define KAIROS_TIMER_HPP
-
-#include "Duration.hpp"
-#include "Stopwatch.hpp"
+#include "Continuum.hpp"
 
 namespace kairos
 {
 
-class Timer
+Continuum::Continuum()
+	: m_stopwatch()
+	, m_time()
+	, m_speed(1.0)
 {
-public:
-	Timer();
-	void setTime(Duration& time); // sets a new start time which becomes the new current time
-	Duration getTime(); // returns the current time. also acts as an "update"
-	bool isDone() const; // returns true if timer has finished
-	bool isPaused() const; // returns true if timer has finished
-	void start(); // begin counting down
-	void resume(); // alias of start()
-	void pause(); // stop counting down at current time
-	void stop(); // finish counting down and reset time to zero
-	void finish(); // alias of stop()
-	void reset(); // sets the timer to the previously set (starting) time and pauses
-	void restart(); // reset(), resume()
+}
 
-private:
-	Stopwatch m_stopwatch;
-	Duration m_startTime;
-	bool m_isDone;
-};
+Duration Continuum::reset()
+{
+	Duration returnTime{ getTime() };
+	m_stopwatch.restart();
+	m_time.zero();
+	m_speed = 1.0;
+	return returnTime;
+}
 
-} // namespace Kairos
+void Continuum::go()
+{
+	m_stopwatch.resume();
+}
 
-#include "Timer.inl"
-#endif // KAIROS_TIMER_HPP
+void Continuum::stop()
+{
+	m_stopwatch.pause();
+}
+
+void Continuum::setSpeed(const double speed)
+{
+	updateTime();
+	m_speed = speed;
+}
+
+double Continuum::getSpeed() const
+{
+	return m_speed;
+}
+
+void Continuum::setTime(Duration time)
+{
+	updateTime();
+	m_time = time;
+}
+
+Duration Continuum::getTime() const
+{
+	updateTime();
+	return m_time;
+}
+
+bool Continuum::isStopped() const
+{
+	return m_stopwatch.isPaused();
+}
+
+
+
+// PRIVATE
+
+inline void Continuum::updateTime() const
+{
+	const bool isStopped{ m_stopwatch.isPaused() };
+	m_time += m_stopwatch.restart() * m_speed;
+	if (isStopped)
+		m_stopwatch.stop();
+}
+
+} // namespace kairos
+#endif // KAIROS_CONTINUUM_INL

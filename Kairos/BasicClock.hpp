@@ -61,4 +61,6 @@ private:
 };
 
 } // namespace kairos
+
+#include "BasicClock.inl"
 #endif // KAIROS_BASICCLOCK_HPP

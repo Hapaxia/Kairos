@@ -73,4 +73,6 @@ private:
 };
 
 } // namespace kairos
+
+#include "Timestep.inl"
 #endif // KAIROS_TIMESTEP_HPP

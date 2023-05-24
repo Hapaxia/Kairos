@@ -3,9 +3,9 @@
 // Kairos
 // --
 //
-// Timer
+// Fps Lite
 //
-// Copyright(c) 2014-2023 M.J.Silk
+// Copyright(c) 2015-2023 M.J.Silk
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -30,44 +30,40 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-// WARNING: C++11 or later required (uses <chrono>)
+#ifndef KAIROS_FPSLITE_INL
+#define KAIROS_FPSLITE_INL
 
-// Pausable countdown timer
-
-// "time" refers to time remaining
-
-#ifndef KAIROS_TIMER_HPP
-#define KAIROS_TIMER_HPP
-
-#include "Duration.hpp"
-#include "Stopwatch.hpp"
+#include "FpsLite.hpp"
 
 namespace kairos
 {
 
-class Timer
+FpsLite::FpsLite()
+	: m_framesPassed(0)
+	, m_fps(0)
 {
-public:
-	Timer();
-	void setTime(Duration& time); // sets a new start time which becomes the new current time
-	Duration getTime(); // returns the current time. also acts as an "update"
-	bool isDone() const; // returns true if timer has finished
-	bool isPaused() const; // returns true if timer has finished
-	void start(); // begin counting down
-	void resume(); // alias of start()
-	void pause(); // stop counting down at current time
-	void stop(); // finish counting down and reset time to zero
-	void finish(); // alias of stop()
-	void reset(); // sets the timer to the previously set (starting) time and pauses
-	void restart(); // reset(), resume()
+}
 
-private:
-	Stopwatch m_stopwatch;
-	Duration m_startTime;
-	bool m_isDone;
-};
+double FpsLite::getFps() const
+{
+	return m_fps;
+}
 
-} // namespace Kairos
+void FpsLite::update()
+{
+	++m_framesPassed;
+	if (clock.getTime().asSeconds() >= 1.0)
+	{
+		m_fps = m_framesPassed / clock.restart().asSeconds();
+		m_framesPassed = 0;
+	}
+}
 
-#include "Timer.inl"
-#endif // KAIROS_TIMER_HPP
+void FpsLite::reset()
+{
+	m_framesPassed = 0;
+	clock.restart();
+}
+
+} // namespace kairos
+#endif // KAIROS_FPSLITE_INL
