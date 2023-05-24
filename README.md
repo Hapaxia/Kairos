@@ -1,5 +1,5 @@
 # Kairos
-by Hapax
+by Hapaxia
 
 A library to simplify timing tasks.
 
