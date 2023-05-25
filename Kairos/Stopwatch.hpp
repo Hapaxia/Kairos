@@ -62,4 +62,6 @@ private:
 };
 
 } // namespace kairos
+
+#include "Stopwatch.inl"
 #endif // KAIROS_STOPWATCH_HPP

@@ -56,4 +56,6 @@ private:
 };
 
 } // namespace kairos
+
+#include "TimestepLite.inl"
 #endif // KAIROS_TIMESTEPLITE_HPP

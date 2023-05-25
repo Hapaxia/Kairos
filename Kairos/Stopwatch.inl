@@ -30,6 +30,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef KAIROS_STOPWATCH_INL
+#define KAIROS_STOPWATCH_INL
+
 #include "Stopwatch.hpp"
 
 namespace kairos
@@ -93,4 +96,5 @@ bool Stopwatch::isPaused() const
 	return m_isPaused;
 }
 
-} // namespace Kairos
+} // namespace kairos
+#endif // KAIROS_STOPWATCH_INL

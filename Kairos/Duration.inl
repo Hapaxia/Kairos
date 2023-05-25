@@ -30,6 +30,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef KAIROS_DURATION_INL
+#define KAIROS_DURATION_INL
+
 #include "Duration.hpp"
 
 namespace kairos
@@ -47,12 +50,12 @@ Duration::Duration(long long int nanoseconds)
 
 Duration::Duration(long int microseconds)
 {
-	nano = microseconds * 1000;
+	nano = static_cast<long long int>(microseconds) * 1000;
 }
 
 Duration::Duration(int milliseconds)
 {
-	nano = milliseconds * 1000000;
+	nano = static_cast<long long int>(milliseconds) * 1000000;
 }
 
 Duration::Duration(double seconds)
@@ -120,13 +123,13 @@ Duration& Duration::setFromSeconds(double seconds)
 
 Duration& Duration::setFromMilliseconds(int milliseconds)
 {
-	nano = milliseconds * 1000000;
+	nano = static_cast<long long int>(milliseconds) * 1000000;
 	return *this;
 }
 
 Duration& Duration::setFromMicroseconds(long int microseconds)
 {
-	nano = microseconds * 1000;
+	nano = static_cast<long long int>(microseconds) * 1000;
 	return *this;
 }
 
@@ -172,3 +175,4 @@ std::ostream& operator<<(std::ostream& out, const Duration& duration)
 }
 
 } // namespace kairos
+#endif // KAIROS_DURATION_INL

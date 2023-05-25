@@ -128,4 +128,6 @@ Duration& Duration::operator/=(const T& divisor)
 }
 
 } // namespace kairos
+
+#include "Duration.inl"
 #endif // KAIROS_DURATION_HPP

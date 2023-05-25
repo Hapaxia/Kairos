@@ -3,9 +3,9 @@
 // Kairos
 // --
 //
-// Timer
+// Fps Lite
 //
-// Copyright(c) 2014-2023 M.J.Silk
+// Copyright(c) 2015-2023 M.J.Silk
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -30,90 +30,40 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include "Timer.hpp"
+#ifndef KAIROS_FPSLITE_INL
+#define KAIROS_FPSLITE_INL
+
+#include "FpsLite.hpp"
 
 namespace kairos
 {
 
-Timer::Timer()
-	: m_isDone(true)
+FpsLite::FpsLite()
+	: m_framesPassed(0)
+	, m_fps(0)
 {
-	m_stopwatch.stop();
 }
 
-void Timer::setTime(Duration& time)
+double FpsLite::getFps() const
 {
-	m_startTime = time;
-	if (m_stopwatch.isPaused())
-		reset();
-	else
-		restart();
+	return m_fps;
 }
 
-// needs fixing
-Duration Timer::getTime()
+void FpsLite::update()
 {
-	if ((m_startTime - m_stopwatch.getTime()).nano < 0)
-		stop();
-	if (m_isDone)
-		return m_stopwatch.getTime();
-	else
-		return m_startTime - m_stopwatch.getTime();
-}
-
-bool Timer::isDone() const
-{
-	return m_isDone;
-}
-
-bool Timer::isPaused() const
-{
-	return m_stopwatch.isPaused();
-}
-
-void Timer::start()
-{
-	if (getTime().nano > 0)
+	++m_framesPassed;
+	if (clock.getTime().asSeconds() >= 1.0)
 	{
-		m_isDone = false;
-		m_stopwatch.resume();
+		m_fps = m_framesPassed / clock.restart().asSeconds();
+		m_framesPassed = 0;
 	}
 }
 
-void Timer::resume()
+void FpsLite::reset()
 {
-	start();
-}
-
-void Timer::pause()
-{
-	m_stopwatch.pause();
-}
-
-void Timer::stop()
-{
-	m_isDone = true;
-	m_stopwatch.stop();
-}
-
-void Timer::finish()
-{
-	stop();
-}
-
-void Timer::reset()
-{
-	m_isDone = false;
-	if (m_stopwatch.isPaused())
-		m_stopwatch.stop();
-	else
-		m_stopwatch.restart();
-}
-
-void Timer::restart()
-{
-	m_isDone = false;
-	m_stopwatch.restart();
+	m_framesPassed = 0;
+	clock.restart();
 }
 
 } // namespace kairos
+#endif // KAIROS_FPSLITE_INL

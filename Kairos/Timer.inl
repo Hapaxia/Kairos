@@ -3,9 +3,9 @@
 // Kairos
 // --
 //
-// Timestep Lite
+// Timer
 //
-// Copyright(c) 2015-2023 M.J.Silk
+// Copyright(c) 2014-2023 M.J.Silk
 //
 // This software is provided 'as-is', without any express or implied
 // warranty. In no event will the authors be held liable for any damages
@@ -30,66 +30,94 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include "TimestepLite.hpp"
+#ifndef KAIROS_TIMER_INL
+#define KAIROS_TIMER_INL
+
+#include "Timer.hpp"
 
 namespace kairos
 {
 
-TimestepLite::TimestepLite()
-	: m_step(0.01)
-	, m_accumulator(0.0)
-	, m_overall(0.0)
+Timer::Timer()
+	: m_isDone(true)
 {
+	m_stopwatch.stop();
 }
 
-void TimestepLite::update(double frameTime)
+void Timer::setTime(Duration& time)
 {
-	m_accumulator += frameTime;
-}
-
-bool TimestepLite::isTimeToIntegrate()
-{
-	if ((m_step > 0.0) && (m_accumulator >= m_step))
-	{
-		m_accumulator -= m_step;
-		m_overall += m_step;
-		return true;
-	}
-	else if ((m_step < 0.0) && (m_accumulator <= m_step))
-	{
-		m_accumulator -= m_step;
-		m_overall += m_step;
-		return true;
-	}
+	m_startTime = time;
+	if (m_stopwatch.isPaused())
+		reset();
 	else
-		return false;
+		restart();
 }
 
-void TimestepLite::setStep(double step)
+// needs fixing
+Duration Timer::getTime()
 {
-	m_step = step;
-	if (shouldBeZero(m_step))
-		m_step = 0.0;
+	if ((m_startTime - m_stopwatch.getTime()).nano < 0)
+		stop();
+	if (m_isDone)
+		return m_stopwatch.getTime();
+	else
+		return m_startTime - m_stopwatch.getTime();
 }
 
-double TimestepLite::getStep() const
+bool Timer::isDone() const
 {
-	return m_step;
+	return m_isDone;
 }
 
-double TimestepLite::getOverall() const
+bool Timer::isPaused() const
 {
-	return (m_overall > m_step) ? m_overall - m_step : 0.0;
+	return m_stopwatch.isPaused();
 }
 
-
-
-// PRIVATE
-
-bool TimestepLite::shouldBeZero(double a) const
+void Timer::start()
 {
-	const double zeroEpsilon{ 0.00001 };
-	return a < zeroEpsilon && a > -zeroEpsilon;
+	if (getTime().nano > 0)
+	{
+		m_isDone = false;
+		m_stopwatch.resume();
+	}
+}
+
+void Timer::resume()
+{
+	start();
+}
+
+void Timer::pause()
+{
+	m_stopwatch.pause();
+}
+
+void Timer::stop()
+{
+	m_isDone = true;
+	m_stopwatch.stop();
+}
+
+void Timer::finish()
+{
+	stop();
+}
+
+void Timer::reset()
+{
+	m_isDone = false;
+	if (m_stopwatch.isPaused())
+		m_stopwatch.stop();
+	else
+		m_stopwatch.restart();
+}
+
+void Timer::restart()
+{
+	m_isDone = false;
+	m_stopwatch.restart();
 }
 
 } // namespace kairos
+#endif // KAIROS_TIMER_INL

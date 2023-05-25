@@ -3,7 +3,7 @@
 // Kairos
 // --
 //
-// Fps Lite
+// Continuum
 //
 // Copyright(c) 2015-2023 M.J.Silk
 //
@@ -30,36 +30,79 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include "FpsLite.hpp"
+#ifndef KAIROS_CONTINUUM_INL
+#define KAIROS_CONTINUUM_INL
+
+#include "Continuum.hpp"
 
 namespace kairos
 {
 
-FpsLite::FpsLite()
-	: m_framesPassed(0)
-	, m_fps(0)
+Continuum::Continuum()
+	: m_stopwatch()
+	, m_time()
+	, m_speed(1.0)
 {
 }
 
-double FpsLite::getFps() const
+Duration Continuum::reset()
 {
-	return m_fps;
+	Duration returnTime{ getTime() };
+	m_stopwatch.restart();
+	m_time.zero();
+	m_speed = 1.0;
+	return returnTime;
 }
 
-void FpsLite::update()
+void Continuum::go()
 {
-	++m_framesPassed;
-	if (clock.getTime().asSeconds() >= 1.0)
-	{
-		m_fps = m_framesPassed / clock.restart().asSeconds();
-		m_framesPassed = 0;
-	}
+	m_stopwatch.resume();
 }
 
-void FpsLite::reset()
+void Continuum::stop()
 {
-	m_framesPassed = 0;
-	clock.restart();
+	m_stopwatch.pause();
+}
+
+void Continuum::setSpeed(const double speed)
+{
+	updateTime();
+	m_speed = speed;
+}
+
+double Continuum::getSpeed() const
+{
+	return m_speed;
+}
+
+void Continuum::setTime(Duration time)
+{
+	updateTime();
+	m_time = time;
+}
+
+Duration Continuum::getTime() const
+{
+	updateTime();
+	return m_time;
+}
+
+bool Continuum::isStopped() const
+{
+	return m_stopwatch.isPaused();
+}
+
+
+
+// PRIVATE
+
+inline void Continuum::updateTime() const
+{
+	const bool isStopped{ m_stopwatch.isPaused() };
+	m_time += m_stopwatch.restart() * m_speed;
+	if (isStopped)
+		m_stopwatch.stop();
 }
 
 } // namespace kairos
+#endif // KAIROS_CONTINUUM_INL

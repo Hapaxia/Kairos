@@ -1,7 +1,7 @@
 # Kairos
 by Hapaxia
 
-A library to simplify timing tasks.
+A header-only library to simplify timing tasks.
 
 Requires C++11.
 

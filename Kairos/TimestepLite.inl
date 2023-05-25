@@ -3,7 +3,7 @@
 // Kairos
 // --
 //
-// Continuum
+// Timestep Lite
 //
 // Copyright(c) 2015-2023 M.J.Silk
 //
@@ -30,75 +30,70 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#include "Continuum.hpp"
+#ifndef KAIROS_TIMESTEPLITE_INL
+#define KAIROS_TIMESTEPLITE_INL
+
+#include "TimestepLite.hpp"
 
 namespace kairos
 {
 
-Continuum::Continuum()
-	: m_stopwatch()
-	, m_time()
-	, m_speed(1.0)
+TimestepLite::TimestepLite()
+	: m_step(0.01)
+	, m_accumulator(0.0)
+	, m_overall(0.0)
 {
 }
 
-Duration Continuum::reset()
+void TimestepLite::update(double frameTime)
 {
-	Duration returnTime{ getTime() };
-	m_stopwatch.restart();
-	m_time.zero();
-	m_speed = 1.0;
-	return returnTime;
+	m_accumulator += frameTime;
 }
 
-void Continuum::go()
+bool TimestepLite::isTimeToIntegrate()
 {
-	m_stopwatch.resume();
+	if ((m_step > 0.0) && (m_accumulator >= m_step))
+	{
+		m_accumulator -= m_step;
+		m_overall += m_step;
+		return true;
+	}
+	else if ((m_step < 0.0) && (m_accumulator <= m_step))
+	{
+		m_accumulator -= m_step;
+		m_overall += m_step;
+		return true;
+	}
+	else
+		return false;
 }
 
-void Continuum::stop()
+void TimestepLite::setStep(double step)
 {
-	m_stopwatch.pause();
+	m_step = step;
+	if (shouldBeZero(m_step))
+		m_step = 0.0;
 }
 
-void Continuum::setSpeed(const double speed)
+double TimestepLite::getStep() const
 {
-	updateTime();
-	m_speed = speed;
+	return m_step;
 }
 
-double Continuum::getSpeed() const
+double TimestepLite::getOverall() const
 {
-	return m_speed;
-}
-
-void Continuum::setTime(Duration time)
-{
-	updateTime();
-	m_time = time;
-}
-
-Duration Continuum::getTime() const
-{
-	updateTime();
-	return m_time;
-}
-
-bool Continuum::isStopped() const
-{
-	return m_stopwatch.isPaused();
+	return (m_overall > m_step) ? m_overall - m_step : 0.0;
 }
 
 
 
 // PRIVATE
 
-inline void Continuum::updateTime() const
+bool TimestepLite::shouldBeZero(double a) const
 {
-	const bool isStopped{ m_stopwatch.isPaused() };
-	m_time += m_stopwatch.restart() * m_speed;
-	if (isStopped)
-		m_stopwatch.stop();
+	const double zeroEpsilon{ 0.00001 };
+	return a < zeroEpsilon && a > -zeroEpsilon;
 }
 
 } // namespace kairos
+#endif // KAIROS_TIMESTEPLITE_INL

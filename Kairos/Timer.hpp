@@ -68,4 +68,6 @@ private:
 };
 
 } // namespace Kairos
+
+#include "Timer.inl"
 #endif // KAIROS_TIMER_HPP

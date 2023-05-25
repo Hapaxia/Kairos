@@ -30,6 +30,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef KAIROS_TIMESTEP_INL
+#define KAIROS_TIMESTEP_INL
+
 #include "Timestep.hpp"
 
 namespace kairos
@@ -166,3 +169,4 @@ bool Timestep::shouldBeZero(double a) const
 }
 
 } // namespace kairos
+#endif // KAIROS_TIMESTEP_INL

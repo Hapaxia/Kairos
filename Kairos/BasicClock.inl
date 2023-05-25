@@ -30,6 +30,9 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
+#ifndef KAIROS_BASICCLOCK_INL
+#define KAIROS_BASICCLOCK_INL
+
 #include "BasicClock.hpp"
 
 #include <chrono>
@@ -73,3 +76,4 @@ const unsigned long long int BasicClock::priv_getCurrentTimePointInSeconds() con
 }
 
 } // namespace kairos
+#endif // KAIROS_BASICCLOCK_INL

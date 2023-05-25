@@ -33,10 +33,54 @@
 #ifndef KAIROS_ABSOREL_INL
 #define KAIROS_ABSOREL_INL
 
+#include "Absorel.hpp"
+
 #include <cmath>
 
 namespace kairos
 {
+
+Absorel::Absorel()
+{
+	absolute = 0;
+	relative = 0.0;
+}
+
+Absorel::Absorel(int a, double r)
+{
+	absolute = a;
+	relative = r;
+}
+
+Absorel Absorel::operator+(const Absorel& offset) const
+{
+	int resultAbsolute = static_cast<int>(std::floor(relative + offset.relative)) + absolute + offset.absolute;
+	double resultRelative = (relative + offset.relative + absolute + offset.absolute) - resultAbsolute;
+	return{ resultAbsolute, resultRelative };
+}
+
+Absorel Absorel::operator-(const Absorel& offset) const
+{
+	int resultAbsolute = static_cast<int>(std::floor((relative + absolute) - (offset.relative + offset.absolute)));
+	double resultRelative = (relative + absolute) - (offset.relative + offset.absolute) - resultAbsolute;
+	return{ resultAbsolute, resultRelative };
+}
+
+bool Absorel::operator<(const Absorel& position) const
+{
+	return (absolute + relative) < (position.absolute + position.relative);
+}
+
+bool Absorel::operator>(const Absorel& position) const
+{
+	return (absolute + relative) > (position.absolute + position.relative);
+}
+
+std::ostream& operator<<(std::ostream& out, const Absorel& position)
+{
+	out << position.absolute + position.relative;
+	return out;
+}
 
 template <typename T>
 Absorel::Absorel(const T& number)
