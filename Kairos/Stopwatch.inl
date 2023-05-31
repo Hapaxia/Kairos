@@ -42,13 +42,13 @@ using std::chrono::high_resolution_clock;
 using std::chrono::nanoseconds;
 using std::chrono::duration_cast;
 
-Stopwatch::Stopwatch()
+inline Stopwatch::Stopwatch()
 	: m_startTime(high_resolution_clock::now())
 	, m_isPaused(false)
 {
 }
 
-Duration Stopwatch::getTime() const
+inline Duration Stopwatch::getTime() const
 {
 	Duration elapsed{ m_accumulatedDuration };
 	if (!m_isPaused)
@@ -56,7 +56,7 @@ Duration Stopwatch::getTime() const
 	return elapsed;
 }
 
-Duration Stopwatch::restart()
+inline Duration Stopwatch::restart()
 {
 	high_resolution_clock::time_point nowTime = high_resolution_clock::now();
 	high_resolution_clock::time_point previousStartTime = m_startTime;
@@ -69,14 +69,14 @@ Duration Stopwatch::restart()
 	return elapsed;
 }
 
-Duration Stopwatch::pause()
+inline Duration Stopwatch::pause()
 {
 	m_accumulatedDuration = restart();
 	m_isPaused = true;
 	return m_accumulatedDuration;
 }
 
-Duration Stopwatch::resume()
+inline Duration Stopwatch::resume()
 {
 	if (!m_isPaused)
 		return getTime();
@@ -85,13 +85,13 @@ Duration Stopwatch::resume()
 	return m_accumulatedDuration;
 }
 
-Duration Stopwatch::stop()
+inline Duration Stopwatch::stop()
 {
 	pause();
 	return m_accumulatedDuration.zero();
 }
 
-bool Stopwatch::isPaused() const
+inline bool Stopwatch::isPaused() const
 {
 	return m_isPaused;
 }

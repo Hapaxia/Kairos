@@ -40,63 +40,63 @@
 namespace kairos
 {
 
-Absorel::Absorel()
+inline Absorel::Absorel()
 {
 	absolute = 0;
 	relative = 0.0;
 }
 
-Absorel::Absorel(int a, double r)
+inline Absorel::Absorel(int a, double r)
 {
 	absolute = a;
 	relative = r;
 }
 
-Absorel Absorel::operator+(const Absorel& offset) const
+inline Absorel Absorel::operator+(const Absorel& offset) const
 {
 	int resultAbsolute = static_cast<int>(std::floor(relative + offset.relative)) + absolute + offset.absolute;
 	double resultRelative = (relative + offset.relative + absolute + offset.absolute) - resultAbsolute;
 	return{ resultAbsolute, resultRelative };
 }
 
-Absorel Absorel::operator-(const Absorel& offset) const
+inline Absorel Absorel::operator-(const Absorel& offset) const
 {
 	int resultAbsolute = static_cast<int>(std::floor((relative + absolute) - (offset.relative + offset.absolute)));
 	double resultRelative = (relative + absolute) - (offset.relative + offset.absolute) - resultAbsolute;
 	return{ resultAbsolute, resultRelative };
 }
 
-bool Absorel::operator<(const Absorel& position) const
+inline bool Absorel::operator<(const Absorel& position) const
 {
 	return (absolute + relative) < (position.absolute + position.relative);
 }
 
-bool Absorel::operator>(const Absorel& position) const
+inline bool Absorel::operator>(const Absorel& position) const
 {
 	return (absolute + relative) > (position.absolute + position.relative);
 }
 
-std::ostream& operator<<(std::ostream& out, const Absorel& position)
+inline std::ostream& operator<<(std::ostream& out, const Absorel& position)
 {
 	out << position.absolute + position.relative;
 	return out;
 }
 
 template <typename T>
-Absorel::Absorel(const T& number)
+inline Absorel::Absorel(const T& number)
 {
 	*this = positionFromNumber(number);
 }
 
 template <typename Ta, typename Tr>
-Absorel::Absorel(const Ta& a, const Tr& r)
+inline Absorel::Absorel(const Ta& a, const Tr& r)
 {
 	absolute = static_cast<int>(a);
 	relative = static_cast<double>(r);
 }
 
 template <typename T>
-Absorel Absorel::operator+(const T& offset) const
+inline Absorel Absorel::operator+(const T& offset) const
 {
 	Absorel positionOffset{ offset };
 	int resultAbsolute = static_cast<int>(std::floor(relative + positionOffset.relative)) + absolute + positionOffset.absolute;
@@ -105,7 +105,7 @@ Absorel Absorel::operator+(const T& offset) const
 }
 
 template <typename T>
-Absorel Absorel::operator-(const T& offset) const
+inline Absorel Absorel::operator-(const T& offset) const
 {
 	Absorel positionOffset{ offset };
 	int resultAbsolute = static_cast<int>(std::floor((relative + absolute) - (positionOffset.relative + positionOffset.absolute)));
@@ -114,47 +114,47 @@ Absorel Absorel::operator-(const T& offset) const
 }
 
 template <typename T>
-Absorel Absorel::operator*(const T& scale) const
+inline Absorel Absorel::operator*(const T& scale) const
 {
 	return positionFromNumber((relative + absolute) * scale);
 }
 
 template <typename T>
-Absorel Absorel::operator/(const T& divisor) const
+inline Absorel Absorel::operator/(const T& divisor) const
 {
 	return positionFromNumber((relative + absolute) / divisor);
 }
 
 template <typename T>
-Absorel& Absorel::operator+=(const T& offset)
+inline Absorel& Absorel::operator+=(const T& offset)
 {
 	*this = *this + offset;
 	return *this;
 }
 
 template <typename T>
-Absorel& Absorel::operator-=(const T& offset)
+inline Absorel& Absorel::operator-=(const T& offset)
 {
 	*this = *this - offset;
 	return *this;
 }
 
 template <typename T>
-Absorel& Absorel::operator*=(const T& scale)
+inline Absorel& Absorel::operator*=(const T& scale)
 {
 	*this = *this * scale;
 	return *this;
 }
 
 template <typename T>
-Absorel& Absorel::operator/=(const T& divisor)
+inline Absorel& Absorel::operator/=(const T& divisor)
 {
 	*this = *this / divisor;
 	return *this;
 }
 
 template <typename T>
-Absorel Absorel::positionFromNumber(const T& number) const
+inline Absorel Absorel::positionFromNumber(const T& number) const
 {
 	int resultAbsolute = static_cast<int>(std::floor(static_cast<long double>(number)));
 	double resultRelative = static_cast<double>(static_cast<long double>(number)-resultAbsolute);

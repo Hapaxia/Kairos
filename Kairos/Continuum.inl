@@ -38,14 +38,14 @@
 namespace kairos
 {
 
-Continuum::Continuum()
+inline Continuum::Continuum()
 	: m_stopwatch()
 	, m_time()
 	, m_speed(1.0)
 {
 }
 
-Duration Continuum::reset()
+inline Duration Continuum::reset()
 {
 	Duration returnTime{ getTime() };
 	m_stopwatch.restart();
@@ -54,40 +54,40 @@ Duration Continuum::reset()
 	return returnTime;
 }
 
-void Continuum::go()
+inline void Continuum::go()
 {
 	m_stopwatch.resume();
 }
 
-void Continuum::stop()
+inline void Continuum::stop()
 {
 	m_stopwatch.pause();
 }
 
-void Continuum::setSpeed(const double speed)
+inline void Continuum::setSpeed(const double speed)
 {
 	updateTime();
 	m_speed = speed;
 }
 
-double Continuum::getSpeed() const
+inline double Continuum::getSpeed() const
 {
 	return m_speed;
 }
 
-void Continuum::setTime(Duration time)
+inline void Continuum::setTime(Duration time)
 {
 	updateTime();
 	m_time = time;
 }
 
-Duration Continuum::getTime() const
+inline Duration Continuum::getTime() const
 {
 	updateTime();
 	return m_time;
 }
 
-bool Continuum::isStopped() const
+inline bool Continuum::isStopped() const
 {
 	return m_stopwatch.isPaused();
 }

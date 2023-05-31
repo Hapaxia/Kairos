@@ -38,13 +38,13 @@
 namespace kairos
 {
 
-Timer::Timer()
+inline Timer::Timer()
 	: m_isDone(true)
 {
 	m_stopwatch.stop();
 }
 
-void Timer::setTime(Duration& time)
+inline void Timer::setTime(Duration& time)
 {
 	m_startTime = time;
 	if (m_stopwatch.isPaused())
@@ -54,7 +54,7 @@ void Timer::setTime(Duration& time)
 }
 
 // needs fixing
-Duration Timer::getTime()
+inline Duration Timer::getTime()
 {
 	if ((m_startTime - m_stopwatch.getTime()).nano < 0)
 		stop();
@@ -64,17 +64,17 @@ Duration Timer::getTime()
 		return m_startTime - m_stopwatch.getTime();
 }
 
-bool Timer::isDone() const
+inline bool Timer::isDone() const
 {
 	return m_isDone;
 }
 
-bool Timer::isPaused() const
+inline bool Timer::isPaused() const
 {
 	return m_stopwatch.isPaused();
 }
 
-void Timer::start()
+inline void Timer::start()
 {
 	if (getTime().nano > 0)
 	{
@@ -83,28 +83,28 @@ void Timer::start()
 	}
 }
 
-void Timer::resume()
+inline void Timer::resume()
 {
 	start();
 }
 
-void Timer::pause()
+inline void Timer::pause()
 {
 	m_stopwatch.pause();
 }
 
-void Timer::stop()
+inline void Timer::stop()
 {
 	m_isDone = true;
 	m_stopwatch.stop();
 }
 
-void Timer::finish()
+inline void Timer::finish()
 {
 	stop();
 }
 
-void Timer::reset()
+inline void Timer::reset()
 {
 	m_isDone = false;
 	if (m_stopwatch.isPaused())
@@ -113,7 +113,7 @@ void Timer::reset()
 		m_stopwatch.restart();
 }
 
-void Timer::restart()
+inline void Timer::restart()
 {
 	m_isDone = false;
 	m_stopwatch.restart();
