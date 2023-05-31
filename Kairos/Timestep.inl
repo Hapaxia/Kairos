@@ -38,7 +38,7 @@
 namespace kairos
 {
 
-Timestep::Timestep()
+inline Timestep::Timestep()
 	: m_step(0.01)
 	, m_accumulator(0.0)
 	, m_overall(0.0)
@@ -47,7 +47,7 @@ Timestep::Timestep()
 {
 }
 
-void Timestep::setStep(double step)
+inline void Timestep::setStep(double step)
 {
 	m_step = step;
 	if (shouldBeZero(m_step))
@@ -55,23 +55,23 @@ void Timestep::setStep(double step)
 	setMaxAccumulation(m_maxAccumulation);
 }
 
-double Timestep::getStep() const
+inline double Timestep::getStep() const
 {
 	return m_step;
 }
 
-float Timestep::getStepAsFloat() const
+inline float Timestep::getStepAsFloat() const
 {
 	return static_cast<float>(getStep());
 }
 
-void Timestep::resetTime()
+inline void Timestep::resetTime()
 {
 	m_continuum.reset();
 	m_overall = 0.0;
 }
 
-bool Timestep::isUpdateRequired()
+inline bool Timestep::isUpdateRequired()
 {
 	if (m_accumulator > m_maxAccumulation)
 		m_accumulator = m_maxAccumulation;
@@ -91,69 +91,69 @@ bool Timestep::isUpdateRequired()
 		return false;
 }
 
-double Timestep::getInterpolationAlpha() const
+inline double Timestep::getInterpolationAlpha() const
 {
 	return m_accumulator < m_step ? m_accumulator / m_step : 1.0;
 }
 
-float Timestep::getInterpolationAlphaAsFloat() const
+inline float Timestep::getInterpolationAlphaAsFloat() const
 {
 	return static_cast<float>(getInterpolationAlpha());
 }
 
-void Timestep::addFrame()
+inline void Timestep::addFrame()
 {
 	double frameTime{ m_continuum.reset().asSeconds() };
 	m_continuum.setSpeed(m_timeSpeed);
 	m_accumulator += frameTime;
 }
 
-double Timestep::getOverall() const
+inline double Timestep::getOverall() const
 {
 	return (m_overall > m_step) ? m_overall - m_step : 0.0;
 }
 
-float Timestep::getOverallAsFloat() const
+inline float Timestep::getOverallAsFloat() const
 {
 	return static_cast<float>(getOverall());
 }
 
-double Timestep::getTime() const
+inline double Timestep::getTime() const
 {
 	return getOverall() + getInterpolationAlpha() * getStep();
 }
 
-float Timestep::getTimeAsFloat() const
+inline float Timestep::getTimeAsFloat() const
 {
 	return static_cast<float>(getTime());
 }
-void Timestep::setMaxAccumulation(double maxAccumulation)
+inline void Timestep::setMaxAccumulation(double maxAccumulation)
 {
 	m_maxAccumulation = maxAccumulation < m_step ? m_step : maxAccumulation;
 }
 
-void Timestep::setTimeSpeed(double timeSpeed)
+inline void Timestep::setTimeSpeed(double timeSpeed)
 {
 	m_timeSpeed = timeSpeed;
 	m_continuum.setSpeed(m_timeSpeed);
 }
 
-double Timestep::getTimeSpeed() const
+inline double Timestep::getTimeSpeed() const
 {
 	return m_timeSpeed;
 }
 
-void Timestep::pause()
+inline void Timestep::pause()
 {
 	m_continuum.stop();
 }
 
-void Timestep::unpause()
+inline void Timestep::unpause()
 {
 	m_continuum.go();
 }
 
-bool Timestep::isPaused() const
+inline bool Timestep::isPaused() const
 {
 	return m_continuum.isStopped();
 }
@@ -162,7 +162,7 @@ bool Timestep::isPaused() const
 
 // PRIVATE
 
-bool Timestep::shouldBeZero(double a) const
+inline bool Timestep::shouldBeZero(double a) const
 {
 	const double zeroEpsilon{ 0.00001 };
 	return a < zeroEpsilon && a > -zeroEpsilon;

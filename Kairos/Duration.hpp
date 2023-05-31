@@ -84,7 +84,7 @@ public:
 };
 
 template <typename T>
-Duration Duration::operator*(const T& scale) const
+inline Duration Duration::operator*(const T& scale) const
 {
 	Duration returnDuration{ *this };
 	returnDuration.nano = static_cast<long long int>(returnDuration.nano * scale);
@@ -92,7 +92,7 @@ Duration Duration::operator*(const T& scale) const
 }
 
 template <typename T>
-Duration Duration::operator/(const T& divisor) const
+inline Duration Duration::operator/(const T& divisor) const
 {
 	Duration returnDuration{ *this };
 	returnDuration.nano = static_cast<long long int>(returnDuration.nano / divisor);
@@ -100,28 +100,28 @@ Duration Duration::operator/(const T& divisor) const
 }
 
 template <typename T>
-Duration& Duration::operator+=(const T& offset)
+inline Duration& Duration::operator+=(const T& offset)
 {
 	*this = *this + offset;
 	return *this;
 }
 
 template <typename T>
-Duration& Duration::operator-=(const T& offset)
+inline Duration& Duration::operator-=(const T& offset)
 {
 	*this = *this - offset;
 	return *this;
 }
 
 template <typename T>
-Duration& Duration::operator*=(const T& scale)
+inline Duration& Duration::operator*=(const T& scale)
 {
 	*this = *this * scale;
 	return *this;
 }
 
 template <typename T>
-Duration& Duration::operator/=(const T& divisor)
+inline Duration& Duration::operator/=(const T& divisor)
 {
 	*this = *this / divisor;
 	return *this;

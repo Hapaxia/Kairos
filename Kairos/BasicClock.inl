@@ -40,34 +40,34 @@
 namespace kairos
 {
 
-BasicClock::BasicClock()
+inline BasicClock::BasicClock()
 	: m_secondsInOneMinute(60)
 	, m_secondsInOneHour(3600)
 	, m_secondsInOneDay(86400)
 {
 }
 
-BasicClock::Time BasicClock::getCurrentTime() const
+inline BasicClock::Time BasicClock::getCurrentTime() const
 {
 	return{ getCurrentHour(), getCurrentMinute(), getCurrentSecond() };
 }
 
-const unsigned int BasicClock::getCurrentHour() const
+inline const unsigned int BasicClock::getCurrentHour() const
 {
 	return static_cast<unsigned int>(priv_getCurrentTimePointInSeconds() % m_secondsInOneDay / m_secondsInOneHour);
 }
 
-const unsigned int BasicClock::getCurrentMinute() const
+inline const unsigned int BasicClock::getCurrentMinute() const
 {
 	return static_cast<unsigned int>(priv_getCurrentTimePointInSeconds() % m_secondsInOneHour / m_secondsInOneMinute);
 }
 
-const unsigned int BasicClock::getCurrentSecond() const
+inline const unsigned int BasicClock::getCurrentSecond() const
 {
 	return static_cast<unsigned int>(priv_getCurrentTimePointInSeconds() % m_secondsInOneMinute);
 }
 
-const unsigned long long int BasicClock::priv_getCurrentTimePointInSeconds() const
+inline const unsigned long long int BasicClock::priv_getCurrentTimePointInSeconds() const
 {
 	using std::chrono::system_clock;
 	system_clock::time_point timePoint = system_clock::now();

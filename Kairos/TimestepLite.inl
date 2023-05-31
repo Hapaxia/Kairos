@@ -38,19 +38,19 @@
 namespace kairos
 {
 
-TimestepLite::TimestepLite()
+inline TimestepLite::TimestepLite()
 	: m_step(0.01)
 	, m_accumulator(0.0)
 	, m_overall(0.0)
 {
 }
 
-void TimestepLite::update(double frameTime)
+inline void TimestepLite::update(double frameTime)
 {
 	m_accumulator += frameTime;
 }
 
-bool TimestepLite::isTimeToIntegrate()
+inline bool TimestepLite::isTimeToIntegrate()
 {
 	if ((m_step > 0.0) && (m_accumulator >= m_step))
 	{
@@ -68,19 +68,19 @@ bool TimestepLite::isTimeToIntegrate()
 		return false;
 }
 
-void TimestepLite::setStep(double step)
+inline void TimestepLite::setStep(double step)
 {
 	m_step = step;
 	if (shouldBeZero(m_step))
 		m_step = 0.0;
 }
 
-double TimestepLite::getStep() const
+inline double TimestepLite::getStep() const
 {
 	return m_step;
 }
 
-double TimestepLite::getOverall() const
+inline double TimestepLite::getOverall() const
 {
 	return (m_overall > m_step) ? m_overall - m_step : 0.0;
 }
@@ -89,7 +89,7 @@ double TimestepLite::getOverall() const
 
 // PRIVATE
 
-bool TimestepLite::shouldBeZero(double a) const
+inline bool TimestepLite::shouldBeZero(double a) const
 {
 	const double zeroEpsilon{ 0.00001 };
 	return a < zeroEpsilon && a > -zeroEpsilon;

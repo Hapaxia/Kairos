@@ -38,32 +38,32 @@
 namespace kairos
 {
 
-Duration::Duration()
+inline Duration::Duration()
 {
 	zero();
 }
 
-Duration::Duration(long long int nanoseconds)
+inline Duration::Duration(long long int nanoseconds)
 {
 	nano = nanoseconds;
 }
 
-Duration::Duration(long int microseconds)
+inline Duration::Duration(long int microseconds)
 {
 	nano = static_cast<long long int>(microseconds) * 1000;
 }
 
-Duration::Duration(int milliseconds)
+inline Duration::Duration(int milliseconds)
 {
 	nano = static_cast<long long int>(milliseconds) * 1000000;
 }
 
-Duration::Duration(double seconds)
+inline Duration::Duration(double seconds)
 {
 	nano = static_cast<long long int>(seconds * 1000000000.0);
 }
 
-Duration Duration::zero()
+inline Duration Duration::zero()
 {
 	Duration returnDuration{ *this };
 	returnDuration.nano = nano;
@@ -71,69 +71,69 @@ Duration Duration::zero()
 	return returnDuration;
 }
 
-long long int Duration::asNanoseconds() const
+inline long long int Duration::asNanoseconds() const
 {
 	return nano;
 }
 
-long int Duration::asMicroseconds() const
+inline long int Duration::asMicroseconds() const
 {
 	return static_cast<long int>(nano / 1000);
 }
 
-int Duration::asMilliseconds() const
+inline int Duration::asMilliseconds() const
 {
 	return static_cast<int>(nano / 1000000);
 }
 
-double Duration::asSeconds() const
+inline double Duration::asSeconds() const
 {
 	return static_cast<double>(nano) / 1000000000.0;
 }
 
-double Duration::asMinutes() const
+inline double Duration::asMinutes() const
 {
 	return asSeconds() / 60.0;
 }
 
-double Duration::asHours() const
+inline double Duration::asHours() const
 {
 	return asMinutes() / 24.0;
 }
 
 
 
-Duration& Duration::setFromHours(double hours)
+inline Duration& Duration::setFromHours(double hours)
 {
 	nano = static_cast<long long int>(hours * 3600000000000.0);
 	return *this;
 }
 
-Duration& Duration::setFromMinutes(double minutes)
+inline Duration& Duration::setFromMinutes(double minutes)
 {
 	nano = static_cast<long long int>(minutes * 60000000000.0);
 	return *this;
 }
 
-Duration& Duration::setFromSeconds(double seconds)
+inline Duration& Duration::setFromSeconds(double seconds)
 {
 	nano = static_cast<long long int>(seconds * 1000000000.0);
 	return *this;
 }
 
-Duration& Duration::setFromMilliseconds(int milliseconds)
+inline Duration& Duration::setFromMilliseconds(int milliseconds)
 {
 	nano = static_cast<long long int>(milliseconds) * 1000000;
 	return *this;
 }
 
-Duration& Duration::setFromMicroseconds(long int microseconds)
+inline Duration& Duration::setFromMicroseconds(long int microseconds)
 {
 	nano = static_cast<long long int>(microseconds) * 1000;
 	return *this;
 }
 
-Duration& Duration::setFromNanoseconds(long long int nanoseconds)
+inline Duration& Duration::setFromNanoseconds(long long int nanoseconds)
 {
 	nano = nanoseconds;
 	return *this;
@@ -143,31 +143,31 @@ Duration& Duration::setFromNanoseconds(long long int nanoseconds)
 
 
 
-Duration Duration::operator+(const Duration& offset) const
+inline Duration Duration::operator+(const Duration& offset) const
 {
 	Duration returnDuration{ *this };
 	returnDuration.nano += offset.nano;
 	return returnDuration;
 }
 
-Duration Duration::operator-(const Duration& offset) const
+inline Duration Duration::operator-(const Duration& offset) const
 {
 	Duration returnDuration{ *this };
 	returnDuration.nano -= offset.nano;
 	return returnDuration;
 }
 
-bool Duration::operator<(const Duration& rhs) const
+inline bool Duration::operator<(const Duration& rhs) const
 {
 	return nano < rhs.nano;
 }
 
-bool Duration::operator>(const Duration& rhs) const
+inline bool Duration::operator>(const Duration& rhs) const
 {
 	return nano > rhs.nano;
 }
 
-std::ostream& operator<<(std::ostream& out, const Duration& duration)
+inline std::ostream& operator<<(std::ostream& out, const Duration& duration)
 {
 	double seconds = static_cast<double>(static_cast<long double>(duration.nano) / 1000000000);
 	out << seconds << " seconds";

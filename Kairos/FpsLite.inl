@@ -38,18 +38,18 @@
 namespace kairos
 {
 
-FpsLite::FpsLite()
+inline FpsLite::FpsLite()
 	: m_framesPassed(0)
 	, m_fps(0)
 {
 }
 
-double FpsLite::getFps() const
+inline double FpsLite::getFps() const
 {
 	return m_fps;
 }
 
-void FpsLite::update()
+inline void FpsLite::update()
 {
 	++m_framesPassed;
 	if (clock.getTime().asSeconds() >= 1.0)
@@ -59,7 +59,7 @@ void FpsLite::update()
 	}
 }
 
-void FpsLite::reset()
+inline void FpsLite::reset()
 {
 	m_framesPassed = 0;
 	clock.restart();
