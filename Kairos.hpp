@@ -27,9 +27,6 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KAIROS_HPP
-#define KAIROS_HPP
+#pragma once
 
 #include "Kairos/all.hpp"
-
-#endif // KAIROS_HPP

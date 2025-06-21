@@ -30,9 +30,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KAIROS_CONTINUUM_HPP
-#define KAIROS_CONTINUUM_HPP
-
+#pragma once
 #include "Stopwatch.hpp"
 
 namespace kairos
@@ -50,17 +48,90 @@ public:
 	void setTime(Duration time);
 	Duration getTime() const;
 	bool isStopped() const;
+	double getSpeedDirectionMultiplier() const;
+
+
+
+
+
+
+
+
+
+
+
+
 
 private:
-	mutable Stopwatch m_stopwatch;
-	mutable Duration m_time;
 	double m_speed;
-	//double m_isPaused;
+	mutable Duration m_time;
+	mutable Stopwatch m_stopwatch;
 
-	inline void updateTime() const;
+	void priv_update() const; // this not only updates m_time but also resets m_stopwatch to zero (does not affect its paused/running state)
 };
 
-} // namespace kairos
+inline Continuum::Continuum()
+	: m_speed{ 1.0 }
+	, m_time{}
+	, m_stopwatch{}
+{
+}
 
-#include "Continuum.inl"
-#endif // KAIROS_CONTINUUM_HPP
+inline Duration Continuum::reset()
+{
+	const Duration returnTime{ getTime() };
+	m_stopwatch.restart();
+	m_time.zero();
+	m_speed = 1.0;
+	return returnTime;
+}
+
+inline void Continuum::go()
+{
+	m_stopwatch.resume();
+}
+
+inline void Continuum::stop()
+{
+	m_stopwatch.pause();
+}
+
+inline void Continuum::setSpeed(const double speed)
+{
+	priv_update();
+	m_speed = speed;
+}
+
+inline double Continuum::getSpeed() const
+{
+	return m_speed;
+}
+
+inline void Continuum::setTime(const Duration time)
+{
+	priv_update();
+	m_time = time;
+}
+
+inline Duration Continuum::getTime() const
+{
+	priv_update();
+	return m_time;
+}
+
+inline bool Continuum::isStopped() const
+{
+	return m_stopwatch.isPaused();
+}
+
+inline double Continuum::getSpeedDirectionMultiplier() const
+{
+	return (m_speed > 0.0) ? 1.0 : (m_speed < 0.0) ? -1.0 : 0.0;
+}
+
+inline void Continuum::priv_update() const
+{
+	m_time += (m_stopwatch.isPaused() ? m_stopwatch.stop() : m_stopwatch.restart()) * m_speed;
+}
+
+} // namespace kairos

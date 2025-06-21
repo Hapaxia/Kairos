@@ -30,9 +30,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KAIROS_FPSLITE_HPP
-#define KAIROS_FPSLITE_HPP
-
+#pragma once
 #include "Stopwatch.hpp"
 
 namespace kairos
@@ -41,18 +39,27 @@ namespace kairos
 class FpsLite
 {
 public:
-	FpsLite();
-	double getFps() const;
-	void update(); // update should be called every frame
-	void reset(); // restarts clock and resets number of frames passed to zero
+	FpsLite()								:m_framesPassed{ 0u }, m_fps{ 0.0 }, m_updateDelay{ 1.0 }, m_clock{} {}
+	void addFrame();						// addFrame should be called every frame
+	double getFps() const					{ return m_fps; }
+	void setUpdateDelay(double updateDelay)	{ m_updateDelay = updateDelay; }
+	void reset()							{ m_framesPassed = 0u; m_clock.restart(); }; // restarts clock and resets number of frames passed to zero
 
 private:
-	Stopwatch clock;
-	unsigned int m_framesPassed;
+	std::size_t m_framesPassed;
 	double m_fps;
+	double m_updateDelay;
+	Stopwatch m_clock;
 };
 
-} // namespace kairos
+inline void FpsLite::addFrame()
+{
+	++m_framesPassed;
+	if (m_clock.getTime().asSeconds() >= m_updateDelay)
+	{
+		m_fps = static_cast<double>(m_framesPassed) / m_clock.restart().asSeconds();
+		m_framesPassed = 0u;
+	}
+}
 
-#include "FpsLite.inl"
-#endif // KAIROS_FPSLITE_HPP
+} // namespace kairos

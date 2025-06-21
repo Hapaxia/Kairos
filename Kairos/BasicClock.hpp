@@ -30,8 +30,8 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KAIROS_BASICCLOCK_HPP
-#define KAIROS_BASICCLOCK_HPP
+#pragma once
+#include <chrono>
 
 namespace kairos
 {
@@ -41,26 +41,30 @@ class BasicClock
 public:
 	struct Time
 	{
-		unsigned int hour;
-		unsigned int minute;
-		unsigned int second;
+		unsigned int hour{};
+		unsigned int minute{};
+		unsigned int second{};
 	};
 
-	BasicClock();
-	Time getCurrentTime() const;
-	const unsigned int getCurrentHour() const;
-	const unsigned int getCurrentMinute() const;
-	const unsigned int getCurrentSecond() const;
+	BasicClock()							: m_secondsInOneMinute{ 60u }, m_secondsInOneHour{ 3600u }, m_secondsInOneDay{ 86400u } {}
+	Time getCurrentTime() const				{ return{ getCurrentHour(), getCurrentMinute(), getCurrentSecond() }; }
+	unsigned int getCurrentHour() const		{ return static_cast<unsigned int>(priv_getCurrentTimePointInSeconds() % m_secondsInOneDay / m_secondsInOneHour); }
+	unsigned int getCurrentMinute() const	{ return static_cast<unsigned int>(priv_getCurrentTimePointInSeconds() % m_secondsInOneHour / m_secondsInOneMinute); }
+	unsigned int getCurrentSecond() const	{ return static_cast<unsigned int>(priv_getCurrentTimePointInSeconds() % m_secondsInOneMinute); }
+
+
+
+
+
+
 
 private:
-	const unsigned long long int m_secondsInOneMinute{ 60 };
-	const unsigned long long int m_secondsInOneHour{ 3600 };
-	const unsigned long long int m_secondsInOneDay{ 86400 };
+	const unsigned long int m_secondsInOneMinute;
+	const unsigned long int m_secondsInOneHour;
+	const unsigned long int m_secondsInOneDay;
 
-	const unsigned long long int priv_getCurrentTimePointInSeconds() const;
+	unsigned long long int priv_getCurrentTimePointInSeconds() const
+	{ return std::chrono::system_clock::now().time_since_epoch().count() * std::chrono::system_clock::period::num / std::chrono::system_clock::period::den; }
 };
 
 } // namespace kairos
-
-#include "BasicClock.inl"
-#endif // KAIROS_BASICCLOCK_HPP

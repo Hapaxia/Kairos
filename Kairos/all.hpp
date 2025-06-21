@@ -27,13 +27,11 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-// WARNING: C++11 or later required
-
-#ifndef KAIROS_ALL_HPP
-#define KAIROS_ALL_HPP
+#pragma once
 
 #include "Absorel.hpp"
 #include "BasicClock.hpp"
+#include "Clock.hpp"
 #include "Continuum.hpp"
 #include "Duration.hpp"
 #include "FpsLite.hpp"
@@ -42,5 +40,3 @@
 #include "Timestep.hpp"
 #include "TimestepLite.hpp"
 #include "Yalpes.hpp"
-
-#endif // KAIROS_ALL_HPP

@@ -30,15 +30,10 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-// WARNING: C++11 or later required (uses <chrono>)
-
 // Pausable stopwatch
 
-#ifndef KAIROS_STOPWATCH_HPP
-#define KAIROS_STOPWATCH_HPP
-
+#pragma once
 #include "Duration.hpp"
-
 #include <chrono>
 
 namespace kairos
@@ -55,13 +50,76 @@ public:
 	Duration stop(); // stops timer and resets time to zero
 	bool isPaused() const;
 
+
+
+
+
+
+
+
+
+
+
+
+
 private:
 	std::chrono::high_resolution_clock::time_point m_startTime;
 	bool m_isPaused;
 	Duration m_accumulatedDuration;
 };
 
-} // namespace kairos
+inline Stopwatch::Stopwatch()
+	: m_startTime{ std::chrono::high_resolution_clock::now() }
+	, m_isPaused{ false }
+	, m_accumulatedDuration{}
+{
+}
 
-#include "Stopwatch.inl"
-#endif // KAIROS_STOPWATCH_HPP
+inline Duration Stopwatch::getTime() const
+{
+	Duration elapsed{ m_accumulatedDuration };
+	if (!m_isPaused)
+		elapsed.nano += std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::high_resolution_clock::now() - m_startTime).count();
+	return elapsed;
+}
+
+inline Duration Stopwatch::restart()
+{
+	auto previousStartTime{ m_startTime };
+	m_startTime = std::chrono::high_resolution_clock::now();
+
+	Duration elapsed{ m_accumulatedDuration.zero() };
+	if (!m_isPaused)
+		elapsed.nano += std::chrono::duration_cast<std::chrono::nanoseconds>(m_startTime - previousStartTime).count();
+	m_isPaused = false;
+	return elapsed;
+}
+
+inline Duration Stopwatch::pause()
+{
+	m_accumulatedDuration = restart();
+	m_isPaused = true;
+	return m_accumulatedDuration;
+}
+
+inline Duration Stopwatch::resume()
+{
+	if (!m_isPaused)
+		return getTime();
+	m_accumulatedDuration = restart();
+	m_isPaused = false;
+	return m_accumulatedDuration;
+}
+
+inline Duration Stopwatch::stop()
+{
+	pause();
+	return m_accumulatedDuration.zero();
+}
+
+inline bool Stopwatch::isPaused() const
+{
+	return m_isPaused;
+}
+
+} // namespace kairos

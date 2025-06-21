@@ -30,9 +30,7 @@
 //
 //////////////////////////////////////////////////////////////////////////////
 
-#ifndef KAIROS_ABSOREL_HPP
-#define KAIROS_ABSOREL_HPP
-
+#pragma once
 #include <ostream>
 
 namespace kairos
@@ -75,11 +73,146 @@ struct Absorel
 	bool operator>(const Absorel& position) const;
 	friend std::ostream& operator<<(std::ostream& out, const Absorel& position);
 
+
+
+
+
+
+
+
+
+
+
+
+
 private:
 	template <typename T>
-	Absorel positionFromNumber(const T& n) const; // return position created from any number type
+	Absorel priv_positionFromNumber(const T& n) const; // return position created from any number type
 };
 
 } // namespace kairos
-#include "Absorel.inl"
-#endif // KAIROS_ABSOREL_HPP
+#include <cmath>
+namespace kairos
+{
+
+inline Absorel::Absorel()
+	: absolute{ 0 }
+	, relative{ 0.0 }
+{
+}
+
+inline Absorel::Absorel(const int a, const double r)
+	: absolute{ a }
+	, relative{ r }
+{
+}
+
+inline Absorel Absorel::operator+(const Absorel& offset) const
+{
+	const int resultAbsolute{ static_cast<int>(std::lround(std::floor(relative + offset.relative))) + absolute + offset.absolute };
+	const double resultRelative{ (relative + offset.relative + absolute + offset.absolute) - resultAbsolute };
+	return{ resultAbsolute, resultRelative };
+}
+
+inline Absorel Absorel::operator-(const Absorel& offset) const
+{
+	const int resultAbsolute{ static_cast<int>(std::lround(std::floor((relative + absolute) - (offset.relative + offset.absolute)))) };
+	const double resultRelative{ (relative + absolute) - (offset.relative + offset.absolute) - resultAbsolute };
+	return{ resultAbsolute, resultRelative };
+}
+
+inline bool Absorel::operator<(const Absorel& position) const
+{
+	return (absolute + relative) < (position.absolute + position.relative);
+}
+
+inline bool Absorel::operator>(const Absorel& position) const
+{
+	return (absolute + relative) > (position.absolute + position.relative);
+}
+
+inline std::ostream& operator<<(std::ostream& out, const Absorel& position)
+{
+	return (out << position.absolute + position.relative);
+}
+
+template <typename T>
+inline Absorel::Absorel(const T& number)
+{
+	*this = priv_positionFromNumber(number);
+}
+
+template <typename Ta, typename Tr>
+inline Absorel::Absorel(const Ta& a, const Tr& r)
+{
+	absolute = static_cast<int>(a);
+	relative = static_cast<double>(r);
+}
+
+template <typename T>
+inline Absorel Absorel::operator+(const T& offset) const
+{
+	const Absorel positionOffset{ offset };
+	const int resultAbsolute{ static_cast<int>(std::floor(relative + positionOffset.relative)) + absolute + positionOffset.absolute };
+	const double resultRelative{ (relative + positionOffset.relative + absolute + positionOffset.absolute) - resultAbsolute };
+	return{ resultAbsolute, resultRelative };
+}
+
+template <typename T>
+inline Absorel Absorel::operator-(const T& offset) const
+{
+	const Absorel positionOffset{ offset };
+	const int resultAbsolute{ static_cast<int>(std::floor((relative + absolute) - (positionOffset.relative + positionOffset.absolute))) };
+	const double resultRelative{ (relative + absolute) - (positionOffset.relative + positionOffset.absolute) - resultAbsolute };
+	return{ resultAbsolute, resultRelative };
+}
+
+template <typename T>
+inline Absorel Absorel::operator*(const T& scale) const
+{
+	return priv_positionFromNumber((relative + absolute) * scale);
+}
+
+template <typename T>
+inline Absorel Absorel::operator/(const T& divisor) const
+{
+	return priv_positionFromNumber((relative + absolute) / divisor);
+}
+
+template <typename T>
+inline Absorel& Absorel::operator+=(const T& offset)
+{
+	*this = *this + offset;
+	return *this;
+}
+
+template <typename T>
+inline Absorel& Absorel::operator-=(const T& offset)
+{
+	*this = *this - offset;
+	return *this;
+}
+
+template <typename T>
+inline Absorel& Absorel::operator*=(const T& scale)
+{
+	*this = *this * scale;
+	return *this;
+}
+
+template <typename T>
+inline Absorel& Absorel::operator/=(const T& divisor)
+{
+	*this = *this / divisor;
+	return *this;
+}
+
+template <typename T>
+inline Absorel Absorel::priv_positionFromNumber(const T& number) const
+{
+	const int resultAbsolute{ static_cast<int>(std::floor(static_cast<long double>(number))) };
+	const double resultRelative{ static_cast<double>(static_cast<long double>(number) - resultAbsolute) };
+	return{ resultAbsolute, resultRelative };
+}
+
+} // namespace kairos
