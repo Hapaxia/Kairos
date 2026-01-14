@@ -31,7 +31,11 @@
 
 #include "Absorel.hpp"
 #include "BasicClock.hpp"
+
+#ifndef KAIROS_IGNORE_CPP20
 #include "Clock.hpp"
+#endif // KAIROS_IGNORE_CPP20
+
 #include "Continuum.hpp"
 #include "Duration.hpp"
 #include "FpsLite.hpp"
